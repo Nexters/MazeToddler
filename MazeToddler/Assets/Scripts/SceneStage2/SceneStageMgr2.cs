@@ -2,13 +2,13 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class SceneStageMgr : MonoBehaviour {
+public class SceneStageMgr2 : MonoBehaviour {
 
     //RuntimePlatform platform = Application.platform;
 
-    public void OnStartBtn()
+    public void OnBtnResult()
     {
-        Application.LoadLevel("SceneMain");
+        Application.LoadLevel("SceneResult");
     }
 
     /*
