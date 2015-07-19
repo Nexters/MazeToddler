@@ -46,12 +46,17 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\DoorEntrance.cs" />
+     <Compile Include="Assets\Scripts\DoorExit.cs" />
      <Compile Include="Assets\Scripts\SceneLobby\SceneLobbyMgr.cs" />
      <Compile Include="Assets\Scripts\SceneMain\SceneMainMgr.cs" />
      <Compile Include="Assets\Scripts\SceneResult\SceneResultMgr.cs" />
+     <Compile Include="Assets\Scripts\SceneStage0\SceneStageMgr0.cs" />
      <Compile Include="Assets\Scripts\SceneStage1\SceneStageMgr1.cs" />
      <Compile Include="Assets\Scripts\SceneStage2\SceneStageMgr2.cs" />
      <Compile Include="Assets\Scripts\SceneStage3\SceneStageMgr3.cs" />
+     <Compile Include="Assets\Scripts\mainCam.cs" />
+     <Compile Include="Assets\Scripts\playerCtrl.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
