@@ -3,26 +3,37 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class SceneLobbyMgr : MonoBehaviour {
-
     //RuntimePlatform platform = Application.platform;
-    public static int curStageNum = 1;
-    
+    public static int curStageNum = 0;
+
+    void ChangeScene()
+    {
+        string strStageName = string.Format("SceneStage{0}", curStageNum);
+        Application.LoadLevel(strStageName);
+    }
+
+    public void OnGoToStage0()
+    {
+        curStageNum = 0;
+        ChangeScene();
+    }
+
     public void OnGoToStage1()
     {
         curStageNum = 1;
-        Application.LoadLevel("SceneStage1");
+        ChangeScene();
     }
 
     public void OnGoToStage2()
     {
         curStageNum = 2;
-        Application.LoadLevel("SceneStage2");
+        ChangeScene();
     }
 
     public void OnGoToStage3()
     {
         curStageNum = 3;
-        Application.LoadLevel("SceneStage3");
+        ChangeScene();
     }
 
     /*
