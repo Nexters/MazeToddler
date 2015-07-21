@@ -1,41 +1,70 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class playerCtrl : MonoBehaviour {
+public class playerCtrl : MonoBehaviour 
+{
+    public float Speed;
 
-	private Transform _transform;
 	private Animator _animator;
+    private Transform _transform;
 
-	void Awake() {
-		_transform = this.transform;
-		_animator = this.GetComponent<Animator>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-		float fx = Input.GetAxisRaw("Horizontal");
-		float fy = Input.GetAxisRaw("Vertical");
+    private void Awake()
+    {
+        _transform = this.transform;
+        if(this.GetComponent<Animator>())
+        {
+            _animator = this.GetComponent<Animator>();
+        }
+    }
 
-		bool bWalking = Mathf.Abs(fx) + Mathf.Abs(fy) > 0;
+    private void testCtrl()
+    {
+        float fX = Input.GetAxisRaw("Horizontal");
+        float fY = Input.GetAxisRaw("Vertical");
 
-		_animator.SetBool("IsWalking", bWalking);
+        bool bWalking = Mathf.Abs(fX) + Mathf.Abs(fY) > 0;
+
+        _animator.SetBool("IsWalking", bWalking);
 
         if (bWalking)
         {
-            _animator.SetFloat("x", fx);
-            _animator.SetFloat("y", fy);
+            _animator.SetFloat("x", fX);
+            _animator.SetFloat("y", fY);
 
-            _transform.position += new Vector3(fx, fy, 0.0f).normalized * 0.03f;
+            _transform.position += new Vector3(fX, fY, 0.0f).normalized * Speed * 0.01f;
         }
-		
-	}
+    }
+    private void touchCtrl()
+    {
+        bool bWalking = InputManager.getInstance().isKeyDown(InputManager.E_INPUT.JoyStick);
 
-	void OnCollisionEnter2D(Collision2D enterColl){
+        _animator.SetBool("IsWalking", bWalking);
 
-		GameObject targetObi = enterColl.gameObject;
-		if(targetObi.tag == "Item"){
-			Destroy(targetObi);
-		}
-	}
+        if (bWalking)
+        {
+            Vector3 dir = new Vector3(InputManager.getInstance().getTouchManager().getJoyStickDir().x, InputManager.getInstance().getTouchManager().getJoyStickDir().y).normalized;
+
+            float fX = dir.x;
+            float fY = dir.y;
+
+            _animator.SetFloat("x", fX);
+            _animator.SetFloat("y", fY);
+
+
+            _transform.position += dir * Time.deltaTime * Speed;
+        }
+    }
+
+    private void Update()
+    {
+        touchCtrl();
+    }
+    private void OnCollisionEnter2D(Collision2D enterColl)
+    {
+        GameObject targetObj = enterColl.gameObject;
+        if(enterColl.collider.tag == Tags.Item)
+        {
+            Destroy(targetObj);
+        }
+    }
 }
