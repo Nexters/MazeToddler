@@ -9,6 +9,8 @@ public class playerCtrl : MonoBehaviour
 	private Animator _animator;
     private Transform _transform;
 
+	bool reachedGoal;
+
     private void Awake()
     {
         _transform = this.transform;
@@ -16,6 +18,7 @@ public class playerCtrl : MonoBehaviour
         {
             _animator = this.GetComponent<Animator>();
         }
+		reachedGoal = false;
     }
 
     private void testCtrl()
@@ -58,6 +61,9 @@ public class playerCtrl : MonoBehaviour
 
     private void Update()
     {
+		if (reachedGoal)
+			return;
+
 		if (isTesting)
 			testCtrl ();
 		else
@@ -71,4 +77,8 @@ public class playerCtrl : MonoBehaviour
             Destroy(targetObj);
         }
     }
+
+	public void ReachedGoal() {
+		reachedGoal = true;
+	}
 }
