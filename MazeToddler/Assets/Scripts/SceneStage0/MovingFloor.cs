@@ -13,6 +13,7 @@ public class MovingFloor : MonoBehaviour {
 
 	void Awake() {
 		anim = GetComponent<Animator> ();
+		Camera.main.
 	}
 
 	void Update() {
@@ -66,7 +67,7 @@ public class MovingFloor : MonoBehaviour {
 			transform.position = Vector3.MoveTowards (transform.position, goal, Time.deltaTime*speed);
 			if(transform.position == goal)
 				break;
-			yield return new WaitForEndOfFrame();
+			yield return null;
 		}
 		ReachedLeft ();
 
@@ -78,7 +79,7 @@ public class MovingFloor : MonoBehaviour {
 			transform.position = Vector3.MoveTowards (transform.position, goal, Time.deltaTime*speed);
 			if(transform.position == goal)
 				break;
-			yield return new WaitForEndOfFrame();
+			yield return null;
 		}
 		ReachedRight ();
 	}
