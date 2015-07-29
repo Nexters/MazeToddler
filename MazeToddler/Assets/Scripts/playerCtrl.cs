@@ -4,6 +4,7 @@ using System.Collections;
 public class playerCtrl : MonoBehaviour 
 {
     public float Speed;
+	public bool isTesting;
 
 	private Animator _animator;
     private Transform _transform;
@@ -57,7 +58,10 @@ public class playerCtrl : MonoBehaviour
 
     private void Update()
     {
-        touchCtrl();
+		if (isTesting)
+			testCtrl ();
+		else
+        	touchCtrl();
     }
     private void OnCollisionEnter2D(Collision2D enterColl)
     {
