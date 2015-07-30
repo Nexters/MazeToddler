@@ -72,6 +72,8 @@ public class TouchManager
     private Vector2 _vec2DeltaPos;
     private Vector2 _vec2JoyStickDir;
     private bool _bInteracting;
+    private float _fDistanceX;
+    private float _fDistanceY;
 
     public void init()
     {
@@ -87,20 +89,35 @@ public class TouchManager
         {
             case strBegan:
                 {
+                    _fDistanceX = 0.0f;
+                    _fDistanceY = 0.0f;
+
                     Ray rayScreen = _mainCam.ScreenPointToRay(new Vector3(fX, fY, 0.0f));
                     RaycastHit hitInfo = new RaycastHit();
                     if (Physics.Raycast(rayScreen, out hitInfo))
                     {
-                        _bInteracting = true;
+                        SwipeCtrl cTargetIC = hitInfo.transform.GetComponent<SwipeCtrl>();
+                        if(hitInfo.collider.tag == Tags.InteractionObject && !cTargetIC.IsOpen())
+                        {
+                            _bInteracting = true;
 
-                        if (!InputManager.getInstance().isKeyDown(InputManager.E_INPUT.Touch))
-                            InputManager.getInstance().keyDown(InputManager.E_INPUT.Touch);
+                            if (!InputManager.getInstance().isKeyDown(InputManager.E_INPUT.Touch))
+                                InputManager.getInstance().keyDown(InputManager.E_INPUT.Touch);
+                        }
                     }
 
                 }
                 break;
             case strMove:
                 {
+                    if(_bInteracting)
+                    {
+                        if (!InputManager.getInstance().isKeyDown(InputManager.E_INPUT.Swipe))
+                            InputManager.getInstance().keyDown(InputManager.E_INPUT.Swipe);
+                        _fDistanceX = fDistanceX;
+                        _fDistanceY = fDistanceY;
+
+                    }
                     if (!_bInteracting)
                     {
                         if (!InputManager.getInstance().isKeyDown(InputManager.E_INPUT.JoyStick))
@@ -113,6 +130,8 @@ public class TouchManager
                 break;
             case strEnd:
                 {
+                    _fDistanceX = 0.0f;
+                    _fDistanceY = 0.0f;
                     if (_bInteracting)
                         _bInteracting = false;
 
@@ -121,6 +140,8 @@ public class TouchManager
 
                     if (InputManager.getInstance().isKeyDown(InputManager.E_INPUT.JoyStick))
                         InputManager.getInstance().keyUp(InputManager.E_INPUT.JoyStick);
+                    if (InputManager.getInstance().isKeyDown(InputManager.E_INPUT.Swipe))
+                        InputManager.getInstance().keyUp(InputManager.E_INPUT.Swipe);
                 }
                 break;
         }
@@ -129,7 +150,7 @@ public class TouchManager
     public void update()
     {
         int nTouchCount = Input.touchCount;
-        if (nTouchCount == 0)
+        if (nTouchCount == 0 || nTouchCount > 1)
             return;
 
 
@@ -185,5 +206,13 @@ public class TouchManager
     public bool isInteracting()
     {
         return _bInteracting;
+    }
+    public float getDistanceX()
+    {
+        return _fDistanceX;
+    }
+    public float getDistanceY()
+    {
+        return _fDistanceY;
     }
 }

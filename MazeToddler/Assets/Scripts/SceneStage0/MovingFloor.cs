@@ -1,31 +1,47 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MovingFloor : MonoBehaviour {
+public class MovingFloor : MonoBehaviour 
+{
 	public GameObject rightDoor;
 	public GameObject leftDoor;
 	public float speed;
+
+    private Transform _transformPlayerPool;
+    private Transform _transformPlayer;
 
 	Animator anim;
 
 	bool isRight = true;
 	bool isMoving = false;
 
-	void Awake() {
+	void Awake() 
+    {
+        _transformPlayerPool = GameObject.Find("Player").transform;
+        _transformPlayer = GameObject.FindGameObjectWithTag(Tags.Player).transform;
 		anim = GetComponent<Animator> ();
 	}
 
 	void Update() {
-		if (isMoving) {
+		if (isMoving) 
+        {
+            _transformPlayer.parent = this.gameObject.transform;
 			CloseDoors();
 			return;
 		}
+        
 
-		if (isRight) {
+		if (isRight) 
+        {
 			OpenRightDoor ();
-		} else {
+		} 
+        else 
+        {
 			OpenLeftDoor();
 		}
+
+        if (!isMoving && _transformPlayer.parent != _transformPlayerPool)
+            _transformPlayer.parent = _transformPlayerPool;
 	}
 
 	void CloseDoors() {
@@ -44,7 +60,6 @@ public class MovingFloor : MonoBehaviour {
 	void OpenLeftDoor() {
 		if (!leftDoor.activeSelf)
 			return;
-
 		leftDoor.SetActive (false);
 		rightDoor.SetActive (true);
 	}
@@ -87,7 +102,8 @@ public class MovingFloor : MonoBehaviour {
 		if (isMoving)
 			return;
 
-		if (col.tag.Equals ("Player")) {
+		if (col.tag == Tags.Player)
+        {
 			CloseDoorsAndMove();
 		}
 	}
