@@ -13,7 +13,6 @@ public class MovingFloor : MonoBehaviour {
 
 	void Awake() {
 		anim = GetComponent<Animator> ();
-		Camera.main.
 	}
 
 	void Update() {

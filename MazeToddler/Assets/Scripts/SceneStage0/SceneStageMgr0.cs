@@ -6,6 +6,8 @@ public class SceneStageMgr0 : MonoBehaviour {
 	public static SceneStageMgr0 Instance;
 
 	public GameObject sceneClearedUIPrefab;
+
+	public PlayerItem playerItemUI;
     //RuntimePlatform platform = Application.platform;
 
 	void Awake() {
@@ -28,7 +30,23 @@ public class SceneStageMgr0 : MonoBehaviour {
 	public void BackToLobby() {
 		Application.LoadLevel("SceneLobby");
 	}
-	
+
+	public void AcquiredHammer() {
+		playerItemUI.PlayerGotHammer ();
+	}
+
+	public void AcquiredShell() {
+		playerItemUI.PlayerGotShell ();
+	}
+
+	public bool PlayerHasHammer() {
+		return playerItemUI.playerGotHammer;
+	}
+
+	public bool PlayerHasShell() {
+		return playerItemUI.playerGotShell;
+	}
+
 	/*
 	public void OnQuitBtn()
 	{

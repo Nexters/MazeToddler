@@ -21,7 +21,10 @@ public class Fox : MonoBehaviour {
     {
         if (collider.transform.tag == "Player")
         {
-            _animator.SetBool("isContact", true);
+			if(SceneStageMgr0.Instance.PlayerHasShell ())
+				Destroy (gameObject);
+			else
+            	_animator.SetBool("isContact", true);
         }
     }
 
