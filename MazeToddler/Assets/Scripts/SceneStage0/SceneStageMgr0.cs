@@ -47,7 +47,7 @@ public class SceneStageMgr0 : MonoBehaviour {
 		return playerItemUI.playerGotShell;
 	}
 
-	/*
+
 	public void OnQuitBtn()
 	{
 		Application.Quit();
@@ -55,10 +55,10 @@ public class SceneStageMgr0 : MonoBehaviour {
 
 	void Update()
 	{
-		if( platform == RuntimePlatform.Android)
-		{
+		//if( platform == RuntimePlatform.Android)
+		//{
 			if (Input.GetKeyDown(KeyCode.Escape)) { Application.Quit(); }
-		}
+		//}
 	}
-	*/
+
 }

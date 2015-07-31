@@ -11,7 +11,7 @@ public class SceneMainMgr : MonoBehaviour {
 		Application.LoadLevel("SceneLobby");
 	}
 
-	/*
+
 	public void OnQuitBtn()
 	{
 		Application.Quit();
@@ -19,10 +19,10 @@ public class SceneMainMgr : MonoBehaviour {
 
 	void Update()
 	{
-		if( platform == RuntimePlatform.Android)
-		{
+		//if( platform == RuntimePlatform.Android)
+		//{
 			if (Input.GetKeyDown(KeyCode.Escape)) { Application.Quit(); }
-		}
+		//}
 	}
-	*/
+
 }

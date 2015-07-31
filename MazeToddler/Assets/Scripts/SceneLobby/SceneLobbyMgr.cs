@@ -36,7 +36,7 @@ public class SceneLobbyMgr : MonoBehaviour {
         ChangeScene();
     }
 
-    /*
+    
 	public void OnQuitBtn()
 	{
 		Application.Quit();
@@ -44,10 +44,10 @@ public class SceneLobbyMgr : MonoBehaviour {
 
 	void Update()
 	{
-		if( platform == RuntimePlatform.Android)
-		{
+		//if( platform == RuntimePlatform.Android)
+		//{
 			if (Input.GetKeyDown(KeyCode.Escape)) { Application.Quit(); }
-		}
+		//}
 	}
-	*/
+
 }
