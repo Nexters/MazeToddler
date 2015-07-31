@@ -96,6 +96,7 @@ public class TouchManager
                     RaycastHit hitInfo = new RaycastHit();
                     if (Physics.Raycast(rayScreen, out hitInfo))
                     {
+				/*
                         SwipeCtrl cTargetIC = hitInfo.transform.GetComponent<SwipeCtrl>();
                         if(hitInfo.collider.tag == Tags.InteractionObject && !cTargetIC.IsOpen())
                         {
@@ -104,6 +105,7 @@ public class TouchManager
                             if (!InputManager.getInstance().isKeyDown(InputManager.E_INPUT.Touch))
                                 InputManager.getInstance().keyDown(InputManager.E_INPUT.Touch);
                         }
+                        */
                     }
 
                 }
