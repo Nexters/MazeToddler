@@ -7,7 +7,8 @@ public class InputManager : MonoBehaviour
     {
         JoyStick,
         Swipe,
-        Touch,
+        BridgeTouch,
+        SwipeTouch,
         Max
     }
     static private InputManager _instance = null;
@@ -35,7 +36,7 @@ public class InputManager : MonoBehaviour
     }
 
     private TouchManager _cTouchManager = new TouchManager();
-    private bool[] _bInputData = new bool[(int)E_INPUT.Max];
+    public bool[] _bInputData = new bool[(int)E_INPUT.Max];
     public void keyDown(E_INPUT eType)
     {
         _bInputData[(int)eType] = true;
@@ -70,6 +71,7 @@ public class TouchManager
     private eventListener _listenerEnded;
 
     private Vector2 _vec2DeltaPos;
+    private Vector2 _vec2NowPos;
     private Vector2 _vec2JoyStickDir;
     private bool _bInteracting;
     private float _fDistanceX;
@@ -92,26 +94,33 @@ public class TouchManager
                     _fDistanceX = 0.0f;
                     _fDistanceY = 0.0f;
 
-                    Ray rayScreen = _mainCam.ScreenPointToRay(new Vector3(fX, fY, 0.0f));
-                    RaycastHit hitInfo = new RaycastHit();
-                    if (Physics.Raycast(rayScreen, out hitInfo))
-                    {
-				/*
-                        SwipeCtrl cTargetIC = hitInfo.transform.GetComponent<SwipeCtrl>();
-                        if(hitInfo.collider.tag == Tags.InteractionObject && !cTargetIC.IsOpen())
-                        {
-                            _bInteracting = true;
+                    Vector2 camPos = Camera.main.ScreenToWorldPoint(new Vector3(fX, fY));
+                    _vec2NowPos = camPos;
+                    Ray2D rayScreen = new Ray2D(camPos, Vector2.zero);
+                    RaycastHit2D hitInfo = Physics2D.Raycast(rayScreen.origin , rayScreen.direction);
 
-                            if (!InputManager.getInstance().isKeyDown(InputManager.E_INPUT.Touch))
-                                InputManager.getInstance().keyDown(InputManager.E_INPUT.Touch);
+                    if (hitInfo.collider != null)
+                    {
+                        if (hitInfo.collider.tag == Tags.SwipeObject)
+                        {
+                            InputManager.getInstance().keyDown(InputManager.E_INPUT.SwipeTouch);
+                            _bInteracting = true;
                         }
-                        */
+                        if (hitInfo.collider.tag == Tags.BridgeObjet)
+                        {
+                            InputManager.getInstance().keyDown(InputManager.E_INPUT.BridgeTouch);
+                            _bInteracting = true;
+                        }
+
                     }
+
 
                 }
                 break;
             case strMove:
                 {
+                    Vector2 camPos = Camera.main.ScreenToWorldPoint(new Vector3(fX, fY));
+                    _vec2NowPos = camPos;
                     if(_bInteracting)
                     {
                         if (!InputManager.getInstance().isKeyDown(InputManager.E_INPUT.Swipe))
@@ -132,13 +141,17 @@ public class TouchManager
                 break;
             case strEnd:
                 {
+                    _vec2NowPos = Vector2.zero;
                     _fDistanceX = 0.0f;
                     _fDistanceY = 0.0f;
                     if (_bInteracting)
                         _bInteracting = false;
 
-                    if (InputManager.getInstance().isKeyDown(InputManager.E_INPUT.Touch))
-                        InputManager.getInstance().keyUp(InputManager.E_INPUT.Touch);
+                    if (InputManager.getInstance().isKeyDown(InputManager.E_INPUT.BridgeTouch))
+                        InputManager.getInstance().keyUp(InputManager.E_INPUT.BridgeTouch);
+
+                    if (InputManager.getInstance().isKeyDown(InputManager.E_INPUT.SwipeTouch))
+                        InputManager.getInstance().keyUp(InputManager.E_INPUT.SwipeTouch);
 
                     if (InputManager.getInstance().isKeyDown(InputManager.E_INPUT.JoyStick))
                         InputManager.getInstance().keyUp(InputManager.E_INPUT.JoyStick);
@@ -216,5 +229,9 @@ public class TouchManager
     public float getDistanceY()
     {
         return _fDistanceY;
+    }
+    public Vector2 getNowPos()
+    {
+        return _vec2NowPos;
     }
 }
