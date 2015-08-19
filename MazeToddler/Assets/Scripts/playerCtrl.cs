@@ -5,7 +5,10 @@ public class playerCtrl : MonoBehaviour
 {
     public float Speed;
 	public bool isTesting;
+    public bool canMove = true;
+    public bool Stop = false;
 
+    private bool _bAutoMoving = false;
 	private Animator _animator;
     private Transform _transform;
 
@@ -19,6 +22,38 @@ public class playerCtrl : MonoBehaviour
             _animator = this.GetComponent<Animator>();
         }
 		reachedGoal = false;
+    }
+
+    private IEnumerator Moving(Vector3 targetPos)
+    {
+        yield return null;
+
+        _bAutoMoving = true;
+
+        Vector3 dir = targetPos - _transform.position;
+        float fRemain = (targetPos - _transform.position).sqrMagnitude;
+        _animator.SetBool("IsWalking", true);
+
+        while(!Stop || fRemain * fRemain > 0.1f)
+        {
+            _animator.SetFloat("x", dir.normalized.x);
+            _animator.SetFloat("y", dir.normalized.y);
+
+            _transform.position += dir.normalized * Time.deltaTime * Speed * 5.0f;
+
+            fRemain = (targetPos - _transform.position).sqrMagnitude;
+            yield return null;
+        }
+
+        _bAutoMoving = false;
+
+        if(!Stop)
+            Stop = true;
+    }
+
+    public void Move(Vector3 targetPos)
+    {
+        StartCoroutine(Moving(targetPos));
     }
 
     private void testCtrl()
@@ -35,7 +70,10 @@ public class playerCtrl : MonoBehaviour
             _animator.SetFloat("x", fX);
             _animator.SetFloat("y", fY);
 
-            _transform.position += new Vector3(fX, fY, 0.0f).normalized * Speed * 0.01f;
+            if (!canMove)
+                return;
+
+            _transform.position += new Vector3(fX, fY, 0.0f).normalized * Time.deltaTime * Speed;
         }
     }
     private void touchCtrl()
@@ -54,6 +92,8 @@ public class playerCtrl : MonoBehaviour
             _animator.SetFloat("x", fX);
             _animator.SetFloat("y", fY);
 
+            if(!canMove)
+                return;
 
             _transform.position += dir * Time.deltaTime * Speed;
         }
@@ -63,6 +103,9 @@ public class playerCtrl : MonoBehaviour
     {
 		if (reachedGoal)
 			return;
+
+        if (_bAutoMoving)
+            return;
 
 		if (isTesting)
 			testCtrl ();

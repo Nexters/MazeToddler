@@ -14,6 +14,10 @@ public class Fox : MonoBehaviour {
         _cPlayerItem = FindObjectOfType(typeof(PlayerItem)) as PlayerItem;
     }
 
+	void OnCollisionEnter2D(Collision2D col) {
+	
+	}
+
     void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.transform.tag == "Player")
